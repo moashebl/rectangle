@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangle Area Calculator - Student ID: 230504583</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 5px;
+        }
+        
+        .header .student-id {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-box label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .info-box .value {
+            font-size: 1.1rem;
+            color: #667eea;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        button.connect-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        button.connect-btn:hover {
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        button.calculate-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+        
+        button.calculate-btn:hover {
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .result-box .area-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .result-box .dimensions {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-top: 10px;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.95rem;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+        
+        .network-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        
+        .rectangle-visual {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            display: none;
+        }
+        
+        .rectangle-visual.show {
+            display: flex;
+        }
+        
+        .rectangle {
+            border: 4px solid #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+            transition: all 0.5s ease;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            button {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 Rectangle Area Calculator</h1>
+            <p>Blockchain-Based Area Calculator DApp</p>
+            <div class="student-id">Student ID: 230504583</div>
+            <div class="network-badge" id="networkBadge">Sepolia Test Network</div>
+        </div>
+        
+        <div class="content">
+            <!-- Status Message -->
+            <div id="statusMessage" class="status"></div>
+            
+            <!-- Connection Section -->
+            <div class="section">
+                <h2>🔌 Wallet Connection</h2>
+                <div class="info-box">
+                    <label>Your Wallet Address:</label>
+                    <div class="value" id="accountAddress">Not connected</div>
+                </div>
+                <div class="info-box">
+                    <label>Contract Address:</label>
+                    <div class="value" id="contractAddress">Not deployed yet</div>
+                </div>
+                <button class="connect-btn" onclick="connectWallet()">Connect MetaMask</button>
+            </div>
+            
+            <!-- Set Width Section -->
+            <div class="section">
+                <h2>📏 Set Rectangle Dimensions</h2>
+                <div class="input-group">
+                    <label>Width (units):</label>
+                    <input type="number" id="widthInput" placeholder="Enter width..." min="1" step="1">
+                </div>
+                <button onclick="setWidth()">Set Width 230504583</button>
+                
+                <div class="input-group" style="margin-top: 25px;">
+                    <label>Height (units):</label>
+                    <input type="number" id="heightInput" placeholder="Enter height..." min="1" step="1">
+                </div>
+                <button onclick="setHeight()">Set Height 230504583</button>
+            </div>
+            
+            <!-- Calculate Area Section -->
+            <div class="section">
+                <h2>📊 Calculate Area</h2>
+                <div class="info-box">
+                    <label>Current Width:</label>
+                    <div class="value" id="currentWidth">0</div>
+                </div>
+                <div class="info-box">
+                    <label>Current Height:</label>
+                    <div class="value" id="currentHeight">0</div>
+                </div>
+                <button class="calculate-btn" onclick="calculateArea()">Area 230504583</button>
+                
+                <!-- Result Display -->
+                <div id="resultBox" class="result-box">
+                    <h3>🎯 Calculated Area</h3>
+                    <div class="area-value" id="areaValue">0</div>
+                    <div class="dimensions">
+                        Width: <span id="resultWidth">0</span> × Height: <span id="resultHeight">0</span>
+                    </div>
+                </div>
+                
+                <!-- Visual Rectangle -->
+                <div id="rectangleVisual" class="rectangle-visual">
+                    <div id="rectangleShape" class="rectangle">
+                        <span id="rectangleLabel">W × H</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Web3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+    <script>
+        // Deployed contract address on Sepolia
+        const CONTRACT_ADDRESS = "0xe8567626c610f8aa844db5e4bcaf22e9873899b0"; 
+        
+        // Contract ABI - Generated from BC230504583.sol
+        const CONTRACT_ABI = [
+            {
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "area",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "calculator",
+                        "type": "address"
+                    }
+                ],
+                "name": "AreaCalculated",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "newHeight",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "setter",
+                        "type": "address"
+                    }
+                ],
+                "name": "HeightSet",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "newWidth",
+                        "type": "uint256"
+                    },
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "setter",
+                        "type": "address"
+                    }
+                ],
+                "name": "WidthSet",
+                "type": "event"
+            },
+            {
+                "inputs": [],
+                "name": "getArea",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getHeight",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getWidth",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_height",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "setHeight",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "_width",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "setWidth",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "viewArea",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+        
+        let web3;
+        let contract;
+        let currentAccount;
+
+        // Initialize Web3
+        async function initWeb3() {
+            if (typeof window.ethereum !== 'undefined') {
+                web3 = new Web3(window.ethereum);
+                contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+                document.getElementById('contractAddress').textContent = CONTRACT_ADDRESS;
+                return true;
+            } else {
+                showStatus('❌ Please install MetaMask to use this DApp!', 'error');
+                return false;
+            }
+        }
+        
+        // Connect Wallet
+        async function connectWallet() {
+            if (!await initWeb3()) return;
+            
+            try {
+                // Request account access
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                currentAccount = accounts[0];
+                document.getElementById('accountAddress').textContent = currentAccount;
+                
+                // Check if connected to Sepolia
+                const chainId = await web3.eth.getChainId();
+                if (chainId !== 11155111n) { // Sepolia chain ID
+                    showStatus('⚠️ Please switch to Sepolia Test Network in MetaMask!', 'error');
+                    return;
+                }
+                
+                showStatus('✅ Wallet connected successfully to Sepolia!', 'success');
+                await loadCurrentValues();
+            } catch (error) {
+                console.error(error);
+                showStatus('❌ Failed to connect wallet: ' + error.message, 'error');
+            }
+        }
+        
+        // Load Current Width and Height
+        async function loadCurrentValues() {
+            if (!contract) {
+                await initWeb3();
+            }
+            
+            try {
+                const width = await contract.methods.getWidth().call();
+                const height = await contract.methods.getHeight().call();
+                
+                document.getElementById('currentWidth').textContent = width;
+                document.getElementById('currentHeight').textContent = height;
+            } catch (error) {
+                console.error(error);
+                showStatus('⚠️ Failed to load current values: ' + error.message, 'error');
+            }
+        }
+        
+        // Set Width
+        async function setWidth() {
+            if (!currentAccount) {
+                showStatus('❌ Please connect your wallet first!', 'error');
+                return;
+            }
+            
+            const widthInput = document.getElementById('widthInput');
+            const width = parseInt(widthInput.value);
+            
+            if (!width || width <= 0) {
+                showStatus('❌ Please enter a valid width greater than 0!', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('⏳ Setting width... Please confirm in MetaMask', 'info');
+                
+                const receipt = await contract.methods.setWidth(width).send({
+                    from: currentAccount,
+                    gas: 100000
+                });
+                
+                showStatus('✅ Width set successfully! TX: ' + receipt.transactionHash, 'success');
+                widthInput.value = '';
+                await loadCurrentValues();
+            } catch (error) {
+                console.error(error);
+                showStatus('❌ Failed to set width: ' + error.message, 'error');
+            }
+        }
+        
+        // Set Height
+        async function setHeight() {
+            if (!currentAccount) {
+                showStatus('❌ Please connect your wallet first!', 'error');
+                return;
+            }
+            
+            const heightInput = document.getElementById('heightInput');
+            const height = parseInt(heightInput.value);
+            
+            if (!height || height <= 0) {
+                showStatus('❌ Please enter a valid height greater than 0!', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('⏳ Setting height... Please confirm in MetaMask', 'info');
+                
+                const receipt = await contract.methods.setHeight(height).send({
+                    from: currentAccount,
+                    gas: 100000
+                });
+                
+                showStatus('✅ Height set successfully! TX: ' + receipt.transactionHash, 'success');
+                heightInput.value = '';
+                await loadCurrentValues();
+            } catch (error) {
+                console.error(error);
+                showStatus('❌ Failed to set height: ' + error.message, 'error');
+            }
+        }
+        
+        // Calculate Area
+        async function calculateArea() {
+            if (!currentAccount) {
+                showStatus('❌ Please connect your wallet first!', 'error');
+                return;
+            }
+            
+            try {
+                showStatus('⏳ Calculating area... Please confirm in MetaMask', 'info');
+                
+                // Call getArea (which emits event)
+                const receipt = await contract.methods.getArea().send({
+                    from: currentAccount,
+                    gas: 100000
+                });
+                
+                // Get the latest width, height and area
+                const width = await contract.methods.getWidth().call();
+                const height = await contract.methods.getHeight().call();
+                const area = await contract.methods.viewArea().call();
+                
+                // Display results
+                document.getElementById('areaValue').textContent = area;
+                document.getElementById('resultWidth').textContent = width;
+                document.getElementById('resultHeight').textContent = height;
+                document.getElementById('currentWidth').textContent = width;
+                document.getElementById('currentHeight').textContent = height;
+                
+                // Show result box
+                document.getElementById('resultBox').classList.add('show');
+                
+                // Visualize rectangle (scaled for display)
+                visualizeRectangle(parseInt(width), parseInt(height));
+                
+                showStatus('✅ Area calculated successfully! TX: ' + receipt.transactionHash, 'success');
+            } catch (error) {
+                console.error(error);
+                showStatus('❌ Failed to calculate area: ' + error.message, 'error');
+            }
+        }
+        
+        // Visualize Rectangle
+        function visualizeRectangle(width, height) {
+            const visual = document.getElementById('rectangleVisual');
+            const rectangle = document.getElementById('rectangleShape');
+            const label = document.getElementById('rectangleLabel');
+            
+            // Scale dimensions for display (max 300x200)
+            const maxWidth = 300;
+            const maxHeight = 200;
+            const scale = Math.min(maxWidth / width, maxHeight / height, 1);
+            
+            const displayWidth = Math.max(width * scale, 50);
+            const displayHeight = Math.max(height * scale, 50);
+            
+            rectangle.style.width = displayWidth + 'px';
+            rectangle.style.height = displayHeight + 'px';
+            label.textContent = `${width} × ${height}`;
+            
+            visual.classList.add('show');
+        }
+        
+        // Show Status Message
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('statusMessage');
+            statusElement.textContent = message;
+            statusElement.className = 'status ' + type;
+            
+            // Auto-hide after 6 seconds
+            setTimeout(() => {
+                statusElement.className = 'status';
+            }, 6000);
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', async () => {
+            if (await initWeb3()) {
+                // Check if already connected
+                const accounts = await web3.eth.getAccounts();
+                if (accounts.length > 0) {
+                    currentAccount = accounts[0];
+                    document.getElementById('accountAddress').textContent = currentAccount;
+                    
+                    // Check network
+                    const chainId = await web3.eth.getChainId();
+                    if (chainId === 11155111n) {
+                        await loadCurrentValues();
+                        showStatus('✅ Connected to Sepolia Test Network', 'success');
+                    } else {
+                        showStatus('⚠️ Please switch to Sepolia Test Network!', 'error');
+                    }
+                }
+            }
+            
+            // Listen for account changes
+            if (window.ethereum) {
+                window.ethereum.on('accountsChanged', async (accounts) => {
+                    if (accounts.length > 0) {
+                        currentAccount = accounts[0];
+                        document.getElementById('accountAddress').textContent = currentAccount;
+                        await loadCurrentValues();
+                        showStatus('🔄 Account changed!', 'info');
+                    } else {
+                        currentAccount = null;
+                        document.getElementById('accountAddress').textContent = 'Not connected';
+                        showStatus('❌ Please connect your wallet', 'error');
+                    }
+                });
+                
+                // Listen for chain changes
+                window.ethereum.on('chainChanged', () => {
+                    window.location.reload();
+                });
+            }
+            
+            // Allow Enter key for inputs
+            document.getElementById('widthInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    setWidth();
+                }
+            });
+            
+            document.getElementById('heightInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    setHeight();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
